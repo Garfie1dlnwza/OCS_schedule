@@ -8,7 +8,6 @@ export default function Schedule() {
   const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc0NTM5NTc4NDQ2MSwidXNlcm5hbWUiOiJnYWJsZS1hZG1pbiIsImlhdCI6MTc0NTM5NTc4NCwiZXhwIjoxNzQ1NDA2NTg0fQ.hDaaDHbv_2AfIG12H8MjpGWW5ozfFIrKsuDj7_3WbrI';
 
   // Get current day for highlighting
   const getCurrentDay = () => {
@@ -22,13 +21,13 @@ export default function Schedule() {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
-        const response = await fetch('https://my-ku-phase2-uat.my-dev.co/myku/openapi/v1/student/schedule', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/schedule`, {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ student_code: '6610450366' }),
+          body: JSON.stringify({ student_code: import.meta.env.VITE_STUDENT_ID }),
         });
         const result = await response.json();
         console.log('API Response:', result);
