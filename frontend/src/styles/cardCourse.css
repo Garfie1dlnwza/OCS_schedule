@@ -1,0 +1,247 @@
+/* ตั้งค่าพื้นฐานสำหรับการแสดงผลทุกขนาดหน้าจอ */
+.card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 12px;
+  width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.cardSideBar {
+  height: 65%;
+  border-radius: 4px;
+  margin-left: 12px;
+  transition: all 0.3s ease;
+}
+
+.cardContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  transition: all 0.3s ease;
+}
+
+.courseInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.courseName {
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+  transition: font-size 0.3s ease;
+}
+
+.locationInfo {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon {
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.roomText {
+  color: #666;
+  transition: font-size 0.3s ease;
+}
+
+.timeInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+}
+
+.timeText {
+  font-weight: bold;
+  color: #333;
+  transition: font-size 0.3s ease;
+}
+
+/* หน้าจอขนาดเล็กที่สุด (โทรศัพท์มือถือขนาดเล็ก) */
+@media screen and (max-width: 375px) {
+  .card {
+    height: 70px;
+  }
+  
+  .cardSideBar {
+    width: 6px;
+    margin-left: 8px;
+  }
+  
+  .cardContent {
+    padding: 12px;
+  }
+  
+  .courseInfo {
+    gap: 4px;
+  }
+  
+  .courseName {
+    font-size: 10px;
+  }
+  
+  .locationInfo {
+    gap: 2px;
+  }
+  
+  .icon {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .roomText {
+    font-size: 9px;
+  }
+  
+  .timeInfo {
+    gap: 4px;
+  }
+  
+  .timeText {
+    font-size: 9px;
+  }
+}
+
+/* หน้าจอขนาดกลาง (โทรศัพท์มือถือทั่วไป) */
+@media screen and (min-width: 376px) and (max-width: 576px) {
+  .card {
+    height: 75px;
+  }
+  
+  .cardSideBar {
+    width: 7px;
+    margin-left: 10px;
+  }
+  
+  .cardContent {
+    padding: 14px;
+  }
+  
+  .courseName {
+    font-size: 12px;
+  }
+  
+  .icon {
+    width: 11px;
+    height: 11px;
+  }
+  
+  .roomText {
+    font-size: 10px;
+  }
+  
+  .timeText {
+    font-size: 10px;
+  }
+}
+
+/* หน้าจอแท็บเล็ตขนาดเล็ก */
+@media screen and (min-width: 577px) and (max-width: 768px) {
+  .card {
+    height: 80px;
+  }
+  
+  .cardSideBar {
+    width: 8px;
+    margin-left: 12px;
+  }
+  
+  .cardContent {
+    padding: 16px;
+  }
+  
+  .courseName {
+    font-size: 14px;
+  }
+  
+  .icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .roomText {
+    font-size: 12px;
+  }
+  
+  .timeText {
+    font-size: 12px;
+  }
+}
+
+/* หน้าจอแท็บเล็ตขนาดใหญ่หรือคอมพิวเตอร์ขนาดเล็ก */
+@media screen and (min-width: 769px) and (max-width: 992px) {
+  .card {
+    height: 85px;
+  }
+  
+  .cardSideBar {
+    width: 9px;
+    margin-left: 14px;
+  }
+  
+  .cardContent {
+    padding: 18px;
+  }
+  
+  .courseName {
+    font-size: 16px;
+  }
+  
+  .icon {
+    width: 13px;
+    height: 13px;
+  }
+  
+  .roomText {
+    font-size: 13px;
+  }
+  
+  .timeText {
+    font-size: 13px;
+  }
+}
+
+/* หน้าจอคอมพิวเตอร์ขนาดมาตรฐาน */
+@media screen and (min-width: 993px) {
+  .card {
+    height: 90px;
+  }
+  
+  .cardSideBar {
+    width: 10px;
+    margin-left: 16px;
+  }
+  
+  .cardContent {
+    padding: 20px;
+  }
+  
+  .courseName {
+    font-size: 18px;
+  }
+  
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .roomText {
+    font-size: 14px;
+  }
+  
+  .timeText {
+    font-size: 14px;
+  }
+}
