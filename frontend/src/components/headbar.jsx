@@ -21,7 +21,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: 'white',
-    
+        
     },
     logoNoti: {
         width: '30px',

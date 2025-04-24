@@ -1,28 +1,36 @@
-/* ตั้งค่าพื้นฐานสำหรับการแสดงผลทุกขนาดหน้าจอ */
 .card {
   display: flex;
   background-color: #fff;
   border-radius: 12px;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: 80px;
   align-items: center;
   position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
   transition: all 0.3s ease;
+  margin-bottom: 10px;
 }
 
 .cardSideBar {
+  width: 8px;
   height: 65%;
   border-radius: 4px;
   margin-left: 12px;
+  flex-shrink: 0;
   transition: all 0.3s ease;
 }
 
 .cardContent {
   flex: 1;
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
-  transition: all 0.3s ease;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 16px;
+  overflow: hidden;
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .courseInfo {
@@ -30,29 +38,65 @@
   flex-direction: column;
   justify-content: center;
   gap: 6px;
+  overflow: hidden;
+  min-width: 0; /* Important for text-overflow to work */
 }
 
 .courseName {
+  font-size: 14px;
   font-weight: 600;
   margin: 0;
   color: #333;
-  transition: font-size 0.3s ease;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.3;
+  word-break: break-word;
+  transition: all 0.3s ease;
 }
 
 .locationInfo {
   display: flex;
   align-items: center;
   gap: 4px;
+  overflow: hidden;
 }
 
 .icon {
+  width: 12px;
+  height: 12px;
   color: #333;
+  flex-shrink: 0;
   transition: all 0.3s ease;
 }
 
 .roomText {
+  font-size: 12px;
   color: #666;
-  transition: font-size 0.3s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.3s ease;
+}
+
+.instructorInfo {
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.instructorText {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .timeInfo {
@@ -61,15 +105,19 @@
   align-items: flex-end;
   justify-content: center;
   gap: 6px;
+  width: 60px;
+  text-align: right;
 }
 
 .timeText {
+  font-size: 12px;
   font-weight: bold;
   color: #333;
-  transition: font-size 0.3s ease;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
-/* หน้าจอขนาดเล็กที่สุด (โทรศัพท์มือถือขนาดเล็ก) */
+/* Small mobile screens */
 @media screen and (max-width: 375px) {
   .card {
     height: 70px;
@@ -81,7 +129,9 @@
   }
   
   .cardContent {
-    padding: 12px;
+    padding: 8px;
+    grid-template-columns: minmax(0, 3fr) minmax(40px, 1fr);
+    gap: 4px;
   }
   
   .courseInfo {
@@ -90,10 +140,14 @@
   
   .courseName {
     font-size: 10px;
+    -webkit-line-clamp: 2;
+    line-height: 1.2;
   }
   
-  .locationInfo {
-    gap: 2px;
+  .roomText,
+  .instructorText,
+  .timeText {
+    font-size: 8px;
   }
   
   .icon {
@@ -101,135 +155,81 @@
     height: 10px;
   }
   
-  .roomText {
-    font-size: 9px;
-  }
-  
   .timeInfo {
-    gap: 4px;
-  }
-  
-  .timeText {
-    font-size: 9px;
+    width: 40px;
   }
 }
 
-/* หน้าจอขนาดกลาง (โทรศัพท์มือถือทั่วไป) */
+/* Medium mobile screens */
 @media screen and (min-width: 376px) and (max-width: 576px) {
   .card {
     height: 75px;
   }
   
-  .cardSideBar {
-    width: 7px;
-    margin-left: 10px;
-  }
-  
   .cardContent {
-    padding: 14px;
+    padding: 12px;
+    grid-template-columns: minmax(0, 3fr) minmax(50px, 1fr);
+    gap: 6px;
   }
   
   .courseName {
     font-size: 12px;
   }
   
-  .icon {
-    width: 11px;
-    height: 11px;
-  }
-  
-  .roomText {
-    font-size: 10px;
-  }
-  
-  .timeText {
-    font-size: 10px;
+  .timeInfo {
+    width: 50px;
   }
 }
 
-/* หน้าจอแท็บเล็ตขนาดเล็ก */
-@media screen and (min-width: 577px) and (max-width: 768px) {
+/* Tablets */
+@media screen and (min-width: 577px) and (max-width: 991px) {
   .card {
     height: 80px;
   }
   
-  .cardSideBar {
-    width: 8px;
-    margin-left: 12px;
-  }
-  
   .cardContent {
     padding: 16px;
+    grid-template-columns: minmax(0, 4fr) minmax(60px, 1fr);
+    gap: 8px;
   }
   
   .courseName {
     font-size: 14px;
   }
   
-  .icon {
-    width: 12px;
-    height: 12px;
-  }
-  
-  .roomText {
-    font-size: 12px;
-  }
-  
-  .timeText {
-    font-size: 12px;
+  .timeInfo {
+    width: 60px;
   }
 }
 
-/* หน้าจอแท็บเล็ตขนาดใหญ่หรือคอมพิวเตอร์ขนาดเล็ก */
-@media screen and (min-width: 769px) and (max-width: 992px) {
-  .card {
-    height: 85px;
-  }
-  
-  .cardSideBar {
-    width: 9px;
-    margin-left: 14px;
-  }
-  
-  .cardContent {
-    padding: 18px;
-  }
-  
-  .courseName {
-    font-size: 16px;
-  }
-  
-  .icon {
-    width: 13px;
-    height: 13px;
-  }
-  
-  .roomText {
-    font-size: 13px;
-  }
-  
-  .timeText {
-    font-size: 13px;
-  }
-}
-
-/* หน้าจอคอมพิวเตอร์ขนาดมาตรฐาน */
-@media screen and (min-width: 993px) {
+/* Larger screens */
+@media screen and (min-width: 992px) {
   .card {
     height: 90px;
   }
   
-  .cardSideBar {
-    width: 10px;
-    margin-left: 16px;
-  }
-  
   .cardContent {
-    padding: 20px;
+    padding: 16px;
+    grid-template-columns: minmax(0, 5fr) minmax(70px, 1fr);
+    gap: 10px;
   }
   
   .courseName {
-    font-size: 18px;
+    font-size: 16px;
+    -webkit-line-clamp: 2;
+  }
+  
+  .roomText,
+  .instructorText {
+    font-size: 13px;
+  }
+  
+  .timeText {
+    font-size: 14px;
+  }
+  
+  .cardSideBar {
+    width: 10px;
   }
   
   .icon {
@@ -237,11 +237,8 @@
     height: 14px;
   }
   
-  .roomText {
-    font-size: 14px;
-  }
-  
-  .timeText {
-    font-size: 14px;
+  .timeInfo {
+    width: 70px;
+
   }
 }
