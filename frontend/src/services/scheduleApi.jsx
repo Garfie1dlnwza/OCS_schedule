@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { daysOrder } from '../utils/scheduleConstants.js';
 import { processScheduleData, getCurrentDay } from '../utils/scheduleUtils.js';
 
-// API configuration
-const API_URL = 'https://my-ku-phase2-uat.my-dev.co/myku/openapi/v1';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc0NTkxMDA1NzQzMSwidXNlcm5hbWUiOiJnYWJsZS1hZG1pbiIsImlhdCI6MTc0NTkxMDA1NywiZXhwIjoxNzQ1OTIwODU3fQ.nTGey8S7CjPnVj87OurSmrDw_jAHItXChKOo6ES1bTQ';
-const STUDENT_CODE = '6610450366';
 
+// API configuration
+const API_URL = import.meta.env.VITE_API_URL 
+const TOKEN = import.meta.env.VITE_TOKEN;
+const STUDENT_CODE = import.meta.env.VITE_STUDENT_CODE;
 // Fetch raw schedule data
 export const fetchScheduleData = async () => {
   try {

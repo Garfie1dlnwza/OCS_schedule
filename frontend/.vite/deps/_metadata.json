@@ -1,0 +1,62 @@
+{
+  "hash": "275cc210",
+  "browserHash": "000d45be",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "f26e83ad",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "a5153c72",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "5ec927cb",
+      "needsInterop": false
+    },
+    "react-icons/io": {
+      "src": "../../node_modules/react-icons/io/index.esm.js",
+      "file": "react-icons_io.js",
+      "fileHash": "a117bcf1",
+      "needsInterop": false
+    },
+    "jspdf": {
+      "src": "../../node_modules/jspdf/dist/jspdf.es.min.js",
+      "file": "jspdf.js",
+      "fileHash": "d1e1dc5d",
+      "needsInterop": false
+    },
+    "html2canvas": {
+      "src": "../../node_modules/html2canvas/dist/html2canvas.esm.js",
+      "file": "html2canvas.js",
+      "fileHash": "dc8b5e55",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-443KLO5K": {
+      "file": "chunk-443KLO5K.js"
+    },
+    "chunk-L2H5Y3CP": {
+      "file": "chunk-L2H5Y3CP.js"
+    },
+    "purify.es-JARZ2ADT": {
+      "file": "purify__es-JARZ2ADT.js"
+    },
+    "index.es-Q72QVNQ5": {
+      "file": "index__es-Q72QVNQ5.js"
+    },
+    "chunk-SITVF2AJ": {
+      "file": "chunk-SITVF2AJ.js"
+    },
+    "chunk-UXIASGQL": {
+      "file": "chunk-UXIASGQL.js"
+    }
+  }
+}

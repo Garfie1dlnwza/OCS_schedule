@@ -17,11 +17,7 @@ export default function SchedulePage() {
   const { schedule, loading, error, currentDay, groupedByDay } =
     useScheduleData(academicYear, semester);
 
-  // ดักการเปลี่ยนแปลงขนาดหน้าจอเพื่อปรับการแสดงผล
-  const [windowSize, setWindowSize] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  });
+
 
   useEffect(() => {
     const handleResize = () => {
