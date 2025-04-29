@@ -182,3 +182,13 @@ VITE_API_TOKEN=your_api_token
 Use `import.meta.env.VITE_API_URL` and `import.meta.env.VITE_API_TOKEN` to access these values in your code.
 
 ---
+
+## 🧱 Schedule Page Structure
+
+The following images show the overall structure of the Schedule Page and which components are responsible for each section:
+
+### 📊 Table View Structure (`scheduleTable.jsx`)
+![Table View Structure](frontend/src/assets/instruction1.png)
+
+### 📋 List View Structure (`scheduleListView.jsx` with `cardCourse.jsx`)
+![List View Structure](frontend/src/assets/instruction2.png)
