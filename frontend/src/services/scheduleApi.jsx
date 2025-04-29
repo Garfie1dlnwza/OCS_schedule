@@ -4,7 +4,7 @@ import { processScheduleData, getCurrentDay } from '../utils/scheduleUtils.js';
 
 // API configuration
 const API_URL = 'https://my-ku-phase2-uat.my-dev.co/myku/openapi/v1';
-const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc0NTUyMDkyNjk5OCwidXNlcm5hbWUiOiJnYWJsZS1hZG1pbiIsImlhdCI6MTc0NTUyMDkyNiwiZXhwIjoxNzQ1NTMxNzI2fQ.cAZn1jYhH51EUl19bhXQp6tERF-StOQZIyN-ygapIQs';
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTc0NTg4OTI3MDA1NywidXNlcm5hbWUiOiJnYWJsZS1hZG1pbiIsImlhdCI6MTc0NTg4OTI3MCwiZXhwIjoxNzQ1OTAwMDcwfQ.UrO4mle78AKfEyJfIFFuAZ3KBq5-GOu-_pivwz8DGcM';
 const STUDENT_CODE = '6610450366';
 
 // Fetch raw schedule data

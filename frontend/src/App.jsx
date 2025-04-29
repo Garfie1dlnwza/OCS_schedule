@@ -1,8 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import SchedulePage  from './screens/schedulePage.jsx';
 
-import CourseTable from './screens/courseTable.jsx';
-import SchedulePage from './screens/schedulePage.jsx'
 
 function App() {
   return (
@@ -10,8 +9,9 @@ function App() {
       <div style={{ height: '100vh', width: '100vw' }}>
         <Routes>
           <Route path="/" element={<Navigate to="/schedule" />} />
+
           <Route path="/schedule" element={<SchedulePage/>} />
-          <Route path="/course-table" element={<CourseTable />} />
+
         </Routes>
       </div>
     </BrowserRouter>

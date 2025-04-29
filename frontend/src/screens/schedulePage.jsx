@@ -1,35 +1,135 @@
-import React, { useState } from 'react';
-import Headbar from '../components/headbar.jsx';
-import background from '../assets/backgroundSchedule.png';
-import CourseCard from '../components/cardCourse.jsx';
-import ButtonAcademicYear from '../components/buttonAcademicYear.jsx';
-import { dayColors, daysOrder } from '../utils/scheduleConstants.js';
-import { useScheduleData } from '../services/scheduleApi.jsx';
-import { styles } from '../styles/scheduleStyle.js';
+import React, { useState, useEffect } from "react";
+import background from "../assets/backgroundSchedule.png";
+import Headbar from "../components/headbar.jsx";
+import { styles } from "../styles/schedulePageStyle.js";
+import { contentStyles } from "../styles/componets/contentTabbarSyle.js";
+import { useScheduleData } from "../services/scheduleApi.jsx";
+import ButtonAcademicYear from "../components/buttonAcademicYear.jsx";
+import TabBar from "../components/tabbar.jsx";
+import ScheduleListView from "../components/scheduleListView.jsx";
+import CourseTableView from "../components/scheduleTable.jsx";
 
 export default function SchedulePage() {
   const currentYear = new Date().getFullYear();
   const [academicYear, setAcademicYear] = useState(currentYear);
   const [semester, setSemester] = useState(1);
+  const [activeTab, setActiveTab] = useState("List");
+  const { schedule, loading, error, currentDay, groupedByDay } =
+    useScheduleData(academicYear, semester);
 
-  const { schedule, loading, error, currentDay, groupedByDay } = useScheduleData(academicYear, semester);
+  // ดักการเปลี่ยนแปลงขนาดหน้าจอเพื่อปรับการแสดงผล
+  const [windowSize, setWindowSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleYearChange = (change) => {
-    setAcademicYear(prev => prev + change);
+    setAcademicYear((prev) => prev + change);
   };
 
   const handleSemesterChange = (newSemester) => {
     setSemester(newSemester);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
+
+  // แสดงส่วน loading สวยงาม
+  if (loading) {
+    return (
+      <div style={{ 
+        ...styles.page, 
+        backgroundImage: `url(${background})`,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Headbar title="Schedule" />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          padding: '30px',
+          borderRadius: '12px',
+          color: 'white'
+        }}>
+          <div style={{ fontSize: '20px', marginBottom: '15px' }}>กำลังโหลดข้อมูล...</div>
+          <div style={{ width: '50px', height: '50px', border: '5px solid #f3f3f3', borderTop: '5px solid #3498db', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div>
+          <style>
+            {`
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            `}
+          </style>
+        </div>
+      </div>
+    );
+  }
+
+  // แสดงข้อความแจ้งเตือนถ้าเกิดข้อผิดพลาด
+  if (error) {
+    return (
+      <div style={{ 
+        ...styles.page, 
+        backgroundImage: `url(${background})`,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Headbar title="Schedule" />
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          backgroundColor: 'rgba(255, 0, 0, 0.1)',
+          padding: '30px',
+          borderRadius: '12px',
+          border: '1px solid #ff5555',
+          color: 'white'
+        }}>
+          <div style={{ fontSize: '20px', marginBottom: '15px' }}>เกิดข้อผิดพลาด</div>
+          <div>{error}</div>
+          <button 
+            onClick={() => window.location.reload()}
+            style={{
+              marginTop: '20px',
+              padding: '10px 15px',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            ลองใหม่อีกครั้ง
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ ...styles.page, backgroundImage: `url(${background})` }}>
       <Headbar title="Schedule" />
-      <div style={{ height: '30px'}} />
-      <div style={{justifyContent: 'center', display: 'flex'}}>
+
+      <div style={{marginTop:20}} />
+      
+      <div style={contentStyles.academicYearContainer}>
         <ButtonAcademicYear
           academicYear={academicYear}
           semester={semester}
@@ -37,50 +137,24 @@ export default function SchedulePage() {
           onSemesterChange={handleSemesterChange}
         />
       </div>
-      <div style={{ height: '30px'}} />
+      
+      <div style={contentStyles.spacer} />
+      
       <div style={styles.body}>
-        <div style={styles.container}>
-          <div style={styles.scheduleContainer}>
-            {daysOrder.map(day => (
-              <div key={day} style={styles.dayRow}>
-                <div style={styles.dayLabelContainer}>
-                  <div style={styles.dayLabel}>{day}</div>
-                </div>
-                
-                <div style={styles.dayCircleWrapper}>
-                  <div style={styles.verticalLine} />
-                  <div style={{
-                    ...styles.dayCircle,
-                    backgroundColor: dayColors[day],
-                    boxShadow: day === currentDay ? '0 0 8px 2px white' : 'none',
-                    position: 'relative',
-                    zIndex: 1,
-                  }} />
-                </div>
-                
-                <div style={{
-                  ...styles.dayCoursesContainer,
-                  backgroundColor: groupedByDay[day].length > 0 
-                    ? 'rgba(255, 255, 255, 0.85)' 
-                    : 'rgba(255, 255, 255, 0.17)', 
-                  border: groupedByDay[day].length > 0 
-                    ? 'none' 
-                    : '2px solid rgba(255, 255, 255, 0.01)',
-                }}>
-                  <div style={styles.coursesList}>
-                    {groupedByDay[day].length > 0 ? (
-                      groupedByDay[day].map((course, index) => (
-                        <div key={`${course.courseCode}-${course.section}-${index}`} style={styles.cardWrapper}>
-                          <CourseCard data={course} color={dayColors[day]} />
-                        </div>
-                      ))
-                    ) : (
-                      <div style={styles.emptyDaySlot} />
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div style={{...styles.container, ...contentStyles.containerModified}}>
+          {/* TabBar Container */}
+          <div style={contentStyles.tabBarWrapper}>
+            <TabBar activeTab={activeTab} onTabChange={handleTabChange} />
+          </div>
+          
+          {/* Content Container */}
+          <div style={contentStyles.contentWrapper}>
+            <div style={contentStyles.scheduleViewContainer}>
+              {activeTab === "List" 
+                ? <ScheduleListView currentDay={currentDay} groupedByDay={groupedByDay} />
+                : <CourseTableView schedule={schedule} />
+              }
+            </div>
           </div>
         </div>
       </div>

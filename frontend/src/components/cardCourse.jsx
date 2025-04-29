@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/cardCourse.css';
+import '../styles/componets/cardCourse.css';
 
 export default function CourseCard({ data, color }) {
   const {
