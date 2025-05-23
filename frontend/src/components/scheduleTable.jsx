@@ -105,115 +105,153 @@ const CourseTableView = ({ schedule }) => {
     );
   };
 
-// แก้ไขฟังก์ชัน downloadTableAsPDF
+// Optimized downloadTableAsPDF function
 const downloadTableAsPDF = () => {
-    const tableElement = document.getElementById("course-table");
-    if (!tableElement) return;
+  const tableElement = document.getElementById("course-table");
+  if (!tableElement) return;
   
-    // สร้าง clone ของตารางเพื่อปรับแต่งก่อนใช้ html2canvas
-    const cloneTable = tableElement.cloneNode(true);
-    
-    // สร้าง div ชั่วคราวเพื่อเก็บตาราง clone
+  // Create loading indicator
+  const loadingMessage = document.createElement('div');
+  loadingMessage.style.position = 'fixed';
+  loadingMessage.style.top = '50%';
+  loadingMessage.style.left = '50%';
+  loadingMessage.style.transform = 'translate(-50%, -50%)';
+  loadingMessage.style.backgroundColor = 'rgba(0,0,0,0.7)';
+  loadingMessage.style.color = 'white';
+  loadingMessage.style.padding = '20px 30px';
+  loadingMessage.style.borderRadius = '8px';
+  loadingMessage.style.zIndex = '9999';
+  loadingMessage.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+  loadingMessage.textContent = 'กำลังสร้าง PDF กรุณารอสักครู่...';
+  document.body.appendChild(loadingMessage);
+  
+  // Use setTimeout to allow UI update before heavy processing
+  setTimeout(() => {
+    // Create a temporary div with controlled dimensions
     const tempDiv = document.createElement('div');
     tempDiv.style.position = 'absolute';
     tempDiv.style.top = '-9999px';
     tempDiv.style.left = '-9999px';
-    tempDiv.style.width = '1200px'; // กำหนดความกว้างที่มากพอ
+    tempDiv.style.width = '1400px';
     
-    // ตั้งค่า style ของ clone table ให้แสดงเต็มขนาดโดยไม่มี transform scale
+    // Clone the table and optimize for PDF
+    const cloneTable = tableElement.cloneNode(true);
+    
+    // Add a title
+    const titleDiv = document.createElement('div');
+    titleDiv.style.textAlign = 'center';
+    titleDiv.style.fontSize = '24px';
+    titleDiv.style.fontWeight = 'bold';
+    titleDiv.style.marginBottom = '15px';
+    titleDiv.textContent = 'ตารางเรียน';
+    
+    // Optimize table styling
     const tableWrapper = cloneTable.querySelector('div');
     if (tableWrapper) {
       const table = tableWrapper.querySelector('table');
       if (table) {
-        // รีเซ็ต transform และขนาด
+        // Reset transformations
         table.style.transform = 'none';
         table.style.width = '100%';
         table.style.maxWidth = '100%';
+        table.style.tableLayout = 'fixed';
+        table.style.borderCollapse = 'collapse';
+        table.style.border = '2px solid #ccc';
         
-        // เพิ่มขอบตารางให้ชัดเจนใน PDF
-        table.style.border = '1px solid #ccc';
-        
-        // ปรับขนาดฟอนต์
+        // Optimize cells
         Array.from(table.querySelectorAll('th, td')).forEach(cell => {
           cell.style.fontSize = '12px';
+          cell.style.padding = '4px';
+          cell.style.border = '1px solid #ddd';
+          cell.style.boxSizing = 'border-box';
+          if (cell.colSpan > 1) {
+            cell.style.textAlign = 'center';
+          }
+        });
+        
+        // Optimize course blocks
+        Array.from(table.querySelectorAll('[style*="courseBlock"]')).forEach(course => {
+          course.style.minHeight = '50px';
+          course.style.fontSize = '12px';
+          course.style.padding = '4px';
+          course.style.boxShadow = 'none';
+          course.style.transform = 'none';
+        });
+        
+        // Optimize header row
+        const headerRow = table.querySelector('thead tr');
+        if (headerRow) {
+          headerRow.style.backgroundColor = '#f5f5f5';
+          
+          Array.from(headerRow.querySelectorAll('th')).forEach(cell => {
+            cell.style.fontWeight = 'bold';
+            cell.style.textAlign = 'center';
+          });
+        }
+        
+        // Set fixed heights for rows
+        Array.from(table.querySelectorAll('tbody tr')).forEach(row => {
+          row.style.height = '60px';
         });
       }
     }
     
-    // เพิ่ม clone table ลงใน temp div
+    // Assemble the temp div
+    tempDiv.appendChild(titleDiv);
     tempDiv.appendChild(cloneTable);
     document.body.appendChild(tempDiv);
     
-    // ปรับค่า style ของ clone table เพื่อให้แสดงได้เต็มที่
+    // Export configuration
     cloneTable.style.overflow = 'visible';
-    cloneTable.style.maxWidth = 'none';
-    cloneTable.style.width = '1100px'; // กำหนดความกว้างที่มากพอ
-    cloneTable.style.padding = '10px';
     cloneTable.style.backgroundColor = 'white';
     
-    // สร้าง PDF
-    html2canvas(cloneTable, {
-      scale: 1.5, // ปรับ scale ให้เหมาะสม
+    // Render with html2canvas - use lower scale for better performance
+    html2canvas(tempDiv, {
+      scale: 1.2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
-      logging: false, // ปิดการแสดงข้อความ log
-      width: 1100, // กำหนดความกว้างที่แน่นอน
-      height: cloneTable.scrollHeight,
-      windowWidth: 1200,
+      logging: false,
+      width: 1400,
+      height: tempDiv.scrollHeight,
     }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-  
       try {
-        // กำหนดขนาดและทิศทางของ PDF
+        // Create PDF with optimal settings
         const pdf = new jsPDF({
           orientation: "landscape",
           unit: "mm",
-          format: "a4",
+          format: "a3", // Use A3 for better quality
         });
-  
-        // คำนวณขนาดของภาพให้พอดีกับ PDF
+        
+        const imgData = canvas.toDataURL("image/jpeg", 0.95); // Use JPEG for smaller file size
+        
+        // Calculate dimensions
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = pdfWidth - 20; // เหลือ margin 10mm ทั้งซ้าย-ขวา
+        const imgWidth = pdfWidth - 20; // 10mm margins on each side
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-  
-        // เพิ่มภาพลงใน PDF
-        pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-  
-        // ตรวจสอบว่าเนื้อหายาวเกินหน้า A4 หรือไม่
-        if (imgHeight > pdfHeight - 20) { // 20 = margin บน+ล่าง
-          // คำนวณจำนวนหน้าที่ต้องการ
-          const pageCount = Math.ceil((imgHeight + 20) / pdfHeight);
-          
-          // สร้างหน้าเพิ่มเติมหากจำเป็น
-          for (let i = 1; i < pageCount; i++) {
-            pdf.addPage();
-            // คำนวณส่วนของภาพที่จะแสดงในแต่ละหน้า
-            pdf.addImage(
-              imgData, "PNG",
-              10, // x
-              10 - (pdfHeight * i), // y - shift ภาพขึ้นตามจำนวนหน้า
-              imgWidth, imgHeight
-            );
-          }
-        }
-  
-        // บันทึก PDF
+        
+        // Add the image
+        pdf.addImage(imgData, "JPEG", 10, 10, imgWidth, imgHeight);
+        
+        // Save the PDF
         pdf.save("course-schedule.pdf");
       } catch (error) {
         console.error("Error generating PDF:", error);
         alert("เกิดข้อผิดพลาดในการสร้าง PDF กรุณาลองใหม่อีกครั้ง");
+      } finally {
+        // Clean up
+        document.body.removeChild(tempDiv);
+        document.body.removeChild(loadingMessage);
       }
-  
-      // ลบ tempDiv
-      document.body.removeChild(tempDiv);
     }).catch(error => {
       console.error("Error capturing table:", error);
       alert("เกิดข้อผิดพลาดในการแคปเจอร์ตาราง กรุณาลองใหม่อีกครั้ง");
       document.body.removeChild(tempDiv);
+      document.body.removeChild(loadingMessage);
     });
-  };
+  }, 100); // Small delay to allow UI to update
+};
  
 
   // แสดงผลเป็นตารางเสมอไม่ว่าจะเป็นขนาดหน้าจอใดก็ตาม
